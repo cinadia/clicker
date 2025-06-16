@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-import pyautogui
+from pynput.mouse import Controller, Button
 import time
 import threading
 
@@ -9,6 +9,9 @@ class SimultaneousClicker:
         self.root = root
         self.root.title("Simultaneous Clicker")
         self.root.geometry("400x300")
+        
+        # Create mouse controller
+        self.mouse = Controller()
         
         # Create main frame
         main_frame = ttk.Frame(root, padding="10")
@@ -50,7 +53,7 @@ class SimultaneousClicker:
         self.root.bind('<Return>', self.save_window1_position)
         
     def save_window1_position(self, event):
-        self.window1_pos = pyautogui.position()
+        self.window1_pos = self.mouse.position
         self.pos1_label.config(text=f"Window 1: {self.window1_pos}")
         self.status_label.config(text="Window 1 position saved!")
         self.root.unbind('<Return>')
@@ -61,7 +64,7 @@ class SimultaneousClicker:
         self.root.bind('<Return>', self.save_window2_position)
         
     def save_window2_position(self, event):
-        self.window2_pos = pyautogui.position()
+        self.window2_pos = self.mouse.position
         self.pos2_label.config(text=f"Window 2: {self.window2_pos}")
         self.status_label.config(text="Window 2 position saved!")
         self.root.unbind('<Return>')
@@ -69,8 +72,11 @@ class SimultaneousClicker:
     def click_window(self, position, window_num):
         if position:
             try:
-                # Perform the double click directly at the position
-                pyautogui.doubleClick(position)
+                # Move to position and double click
+                self.mouse.position = position
+                self.mouse.click(Button.left)
+                time.sleep(0.1)  # Small delay between clicks in double click
+                self.mouse.click(Button.left)
                 print(f"Successfully clicked window {window_num} at position {position}")
             except Exception as e:
                 print(f"Error clicking window {window_num}: {str(e)}")
