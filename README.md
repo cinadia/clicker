@@ -2,7 +2,7 @@
 This application allows the user to rapidly click in two spots on the screen in succession. 
 # Running
 1. `pip install -r requirements.txt`
-2. `python simultaneous_clicks.py`
+2. `python simultaneous_clicks_qt.py`
 # Usage
 1. After running the app, make sure both windows that you want to click are visible on the screen.
 2. Click "Set Window 1 Position"
